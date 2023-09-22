@@ -17,9 +17,7 @@ database = []
 )
 async def create_user(user: UserSchema) -> UserSchemaDB:
     user_with_id = UserSchemaDB(**user.model_dump(), id=len(database) + 1)
-
     database.append(user_with_id)
-
     return user_with_id
 
 
@@ -30,7 +28,7 @@ async def list_users() -> dict[str, list[UserSchemaResponse]]:
 
 @router.patch('/{user_id}/', response_model=UserSchemaResponse)
 async def update_user(user_id: int, user: UserSchema) -> UserSchemaDB:
-    if user_id > len(database) or user_id < 1:
+    if user_id <= 0 or user_id > len(database):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail='User not found'
         )
@@ -46,11 +44,11 @@ async def update_user(user_id: int, user: UserSchema) -> UserSchemaDB:
     response_model=Message,
 )
 async def delete_user(user_id: int) -> dict[str, str]:
-    if user_id > len(database) or user_id < 1:
+    try:
+        del database[user_id - 1]
+    except IndexError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail='User not found'
         )
-
-    del database[user_id - 1]
 
     return {'detail': 'User deleted'}
