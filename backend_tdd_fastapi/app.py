@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from .routes import main_router
+from .routers import main_router
 
 app = FastAPI(
     title='Backend TDD FastAPI',

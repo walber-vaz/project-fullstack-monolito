@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from backend_tdd_fastapi.settings import Settings
+from backend_tdd_fastapi.conf.settings import Settings
 from backend_tdd_fastapi.modules.user.model.user_model import Base
 
 # this is the Alembic Config object, which provides
