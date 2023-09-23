@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from backend_tdd_fastapi.modules.user.schemas import (
+from backend_tdd_fastapi.modules.user.dto.schemas import (
     Message,
     UserSchema,
     UserSchemaDB,
