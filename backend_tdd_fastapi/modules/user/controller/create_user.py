@@ -8,6 +8,7 @@ from backend_tdd_fastapi.modules.user.dto.schemas import (
     UserSchemaResponse,
 )
 from backend_tdd_fastapi.modules.user.model.user_model import User
+from backend_tdd_fastapi.security import get_password_hash
 
 router = APIRouter()
 
@@ -31,7 +32,7 @@ async def create_user(
     db_user = User(
         username=user.username,
         email=user.email,
-        password=user.password,
+        password=get_password_hash(user.password),
     )
 
     session.add(db_user)

@@ -48,9 +48,10 @@ def test_list_users_with_data(client, user):
     assert response.json() == {'users': [user_schema]}
 
 
-def test_patch_user(client, user):
+def test_patch_user(client, user, token):
     response = client.patch(
-        '/users/1',
+        f'/users/{user.id}/',
+        headers={'Authorization': f'Bearer {token}'},
         json={
             'username': 'teste2',
             'email': 'teste2@example.com',
@@ -66,9 +67,10 @@ def test_patch_user(client, user):
     }
 
 
-def test_not_found_user_patch(client):
+def test_not_found_user_patch(client, token):
     response = client.patch(
         '/users/2',
+        headers={'Authorization': f'Bearer {token}'},
         json={
             'username': 'teste2',
             'email': 'teste2@example.com',
@@ -76,19 +78,62 @@ def test_not_found_user_patch(client):
         },
     )
 
-    assert response.status_code == 404
-    assert response.json() == {'detail': 'User not found'}
+    assert response.status_code == 401
+    assert response.json() == {
+        'detail': 'You do not have permission to perform this action'
+    }
 
 
-def test_delete_user(client, user):
-    response = client.delete('/users/1')
+def test_delete_user(client, user, token):
+    response = client.delete(
+        f'/users/{user.id}/',
+        headers={'Authorization': f'Bearer {token}'},
+    )
 
     assert response.status_code == 200
     assert response.json() == {'detail': 'User deleted'}
 
 
-def test_not_found_user_delete(client):
-    response = client.delete('/users/2')
+def test_not_found_user_delete(client, token):
+    response = client.delete(
+        '/users/2/', headers={'Authorization': f'Bearer {token}'}
+    )
 
-    assert response.status_code == 404
-    assert response.json() == {'detail': 'User not found'}
+    assert response.status_code == 401
+    assert response.json() == {
+        'detail': 'You do not have permission to perform this action'
+    }
+
+
+def test_get_token(client, user):
+    response = client.post(
+        '/token',
+        data={'username': user.email, 'password': user.clean_password},
+    )
+    token = response.json()
+
+    assert response.status_code == 200
+    assert 'access_token' in token
+    assert 'token_type' in token
+
+
+def test_get_token_invalid_user(client, user):
+    response = client.post(
+        '/token',
+        data={'username': 'teste', 'password': user.clean_password},
+    )
+    token = response.json()
+
+    assert response.status_code == 401
+    assert token == {'detail': 'Incorrect email or password'}
+
+
+def test_get_token_invalid_password(client, user):
+    response = client.post(
+        '/token',
+        data={'username': user.email, 'password': '123456789'},
+    )
+    token = response.json()
+
+    assert response.status_code == 401
+    assert token == {'detail': 'Incorrect email or password'}

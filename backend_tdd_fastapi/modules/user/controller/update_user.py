@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend_tdd_fastapi.infra.database import get_session
@@ -8,25 +7,29 @@ from backend_tdd_fastapi.modules.user.dto.schemas import (
     UserSchemaResponse,
 )
 from backend_tdd_fastapi.modules.user.model.user_model import User
+from backend_tdd_fastapi.security import get_current_user
 
 router = APIRouter()
 
 
 @router.patch('/{user_id}/', response_model=UserSchemaResponse)
 async def update_user(
-    user_id: int, user: UserSchema, session: Session = Depends(get_session)
+    user_id: int,
+    user: UserSchema,
+    session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
 ):
-    db_user = session.scalar(select(User).where(User.id == user_id))
-    if db_user is None:
+    if current_user.id != user_id:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail='User not found'
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='You do not have permission to perform this action',
         )
 
-    db_user.username = user.username
-    db_user.email = user.email
-    db_user.password = user.password
+    current_user.username = user.username
+    current_user.email = user.email
+    current_user.password = user.password
 
     session.commit()
-    session.refresh(db_user)
+    session.refresh(current_user)
 
-    return db_user
+    return current_user
