@@ -5,10 +5,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from backend_tdd_fastapi.app import app
-from backend_tdd_fastapi.infra.database import get_session
-from backend_tdd_fastapi.modules.user.model.user_model import Base, User
-from backend_tdd_fastapi.security import get_password_hash
+from api.app import app
+from api.security import get_password_hash
+from api.v1.conf.settings import Settings
+from api.v1.infra.database import get_session
+from api.v1.modules.user.model.user_model import Base, User
+
+settings = Settings()  # type: ignore
 
 
 @pytest.fixture
@@ -77,7 +80,7 @@ def other_user(session):
 @pytest.fixture
 def token(client, user):
     response = client.post(
-        '/token',
+        f'{settings.API_VERSION}/token',
         data={'username': user.email, 'password': user.clean_password},
     )
     return response.json()['access_token']

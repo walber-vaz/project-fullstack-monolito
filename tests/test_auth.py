@@ -1,10 +1,14 @@
 from freezegun import freeze_time
 
+from api.v1.conf.settings import Settings
+
+settings = Settings()  # type: ignore
+
 
 def test_token_expiry(client, user):
     with freeze_time('2023-09-28 09:00:00'):
         response = client.post(
-            '/token',
+            f'{settings.API_VERSION}/token',
             data={'username': user.email, 'password': user.clean_password},
         )
 
@@ -13,7 +17,7 @@ def test_token_expiry(client, user):
 
     with freeze_time('2023-09-28 09:31:00'):
         response = client.post(
-            '/refresh_token',
+            f'{settings.API_VERSION}/refresh_token',
             headers={'Authorization': f'Bearer {token}'},
         )
 
@@ -23,7 +27,7 @@ def test_token_expiry(client, user):
 
 def test_refresh_token(client, user, token):
     response = client.post(
-        '/refresh_token',
+        f'{settings.API_VERSION}/refresh_token',
         headers={'Authorization': f'Bearer {token}'},
     )
 

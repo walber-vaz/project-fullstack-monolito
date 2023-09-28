@@ -1,7 +1,7 @@
 from jose import jwt
 
-from backend_tdd_fastapi.conf.settings import Settings
-from backend_tdd_fastapi.security import create_access_token
+from api.security import create_access_token
+from api.v1.conf.settings import Settings
 
 settings = Settings()  # type: ignore
 

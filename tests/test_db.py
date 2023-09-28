@@ -1,6 +1,6 @@
 from sqlalchemy import select
 
-from backend_tdd_fastapi.modules.user.model.user_model import User
+from api.v1.modules.user.model.user_model import User
 
 
 def test_get_user(session):
