@@ -63,13 +63,13 @@ def test_patch_user(client, user, token):
     assert response.json() == {
         'username': 'teste2',
         'email': 'teste2@example.com',
-        'id': 1,
+        'id': user.id,
     }
 
 
-def test_not_found_user_patch(client, token):
+def test_not_found_user_patch(client, other_user, token):
     response = client.patch(
-        '/users/2',
+        f'/users/{other_user.id}',
         headers={'Authorization': f'Bearer {token}'},
         json={
             'username': 'teste2',
@@ -94,9 +94,9 @@ def test_delete_user(client, user, token):
     assert response.json() == {'detail': 'User deleted'}
 
 
-def test_not_found_user_delete(client, token):
+def test_not_found_user_delete(client, other_user, token):
     response = client.delete(
-        '/users/2/', headers={'Authorization': f'Bearer {token}'}
+        f'/users/{other_user.id}', headers={'Authorization': f'Bearer {token}'}
     )
 
     assert response.status_code == 401
@@ -120,7 +120,7 @@ def test_get_token(client, user):
 def test_get_token_invalid_user(client, user):
     response = client.post(
         '/token',
-        data={'username': 'teste', 'password': user.clean_password},
+        data={'username': 'teste@email.com', 'password': 'testtest'},
     )
     token = response.json()
 
@@ -131,7 +131,7 @@ def test_get_token_invalid_user(client, user):
 def test_get_token_invalid_password(client, user):
     response = client.post(
         '/token',
-        data={'username': user.email, 'password': '123456789'},
+        data={'username': user.email, 'password': 'not_correct_password'},
     )
     token = response.json()
 

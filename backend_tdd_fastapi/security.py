@@ -7,24 +7,26 @@ from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from backend_tdd_fastapi.conf.settings import Settings
 from backend_tdd_fastapi.infra.database import get_session
 from backend_tdd_fastapi.modules.auth.dto.schema import TokenData
 from backend_tdd_fastapi.modules.user.model.user_model import User
 
-SECRET_KEY = '3824fd49a09ff26f4f465b469301cb8a7d66d29b182b38b3ad081fe13e962c04'
-ALGORITHM = 'HS256'
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+settings = Settings()  # type: ignore
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
 
 
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.utcnow() + timedelta(
+        minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
+    )
 
     to_encode.update({'exp': expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(
+        to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
+    )
 
     return encoded_jwt
 
@@ -48,7 +50,9 @@ async def get_current_user(
     )
 
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=settings.ALGORITHM
+        )
         username: str = payload.get('sub')  # type: ignore
         if not username:
             raise credentials_exception

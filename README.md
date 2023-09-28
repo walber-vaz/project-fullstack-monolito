@@ -5,6 +5,7 @@
 O projeto consiste em uma API para gerenciamento de usuários e seus endereços. Usando o framework Fastapi e o conceito de TDD onde primeiro é criado os testes e depois a implementação. Nesse projeto fiz o misto criando os testes e implementando ao mesmo tempo.
 
 <div align="center">
+  <img src='./DOCS.png' alt="DOCS" />
   <img src="https://img.shields.io/github/license/walber-vaz/backend-tdd-fastapi?style=for-the-badge" alt="License MIT" />
   <img src="https://img.shields.io/github/languages/count/walber-vaz/backend-tdd-fastapi?style=for-the-badge" alt="Languages 3" />
   <img src="https://img.shields.io/github/languages/top/walber-vaz/backend-tdd-fastapi?style=for-the-badge" alt="Top Python" />

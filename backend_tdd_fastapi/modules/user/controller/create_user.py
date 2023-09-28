@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -12,13 +14,13 @@ from backend_tdd_fastapi.security import get_password_hash
 
 router = APIRouter()
 
+Session = Annotated[Session, Depends(get_session)]
+
 
 @router.post(
     '/', status_code=status.HTTP_201_CREATED, response_model=UserSchemaResponse
 )
-async def create_user(
-    user: UserSchema, session: Session = Depends(get_session)
-):
+async def create_user(user: UserSchema, session: Session):
     db_user = session.scalar(
         select(User).where(User.username == user.username)
     )

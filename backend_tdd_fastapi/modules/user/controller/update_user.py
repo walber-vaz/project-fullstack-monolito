@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -11,13 +13,16 @@ from backend_tdd_fastapi.security import get_current_user
 
 router = APIRouter()
 
+Session = Annotated[Session, Depends(get_session)]
+CurrentUser = Annotated[User, Depends(get_current_user)]
+
 
 @router.patch('/{user_id}/', response_model=UserSchemaResponse)
 async def update_user(
     user_id: int,
     user: UserSchema,
-    session: Session = Depends(get_session),
-    current_user: User = Depends(get_current_user),
+    session: Session,
+    current_user: CurrentUser,
 ):
     if current_user.id != user_id:
         raise HTTPException(

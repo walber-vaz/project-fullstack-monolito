@@ -1,3 +1,4 @@
+import factory
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -17,7 +18,7 @@ def session():
         connect_args={'check_same_thread': False},
         poolclass=StaticPool,
     )
-    Session = sessionmaker(bind=engine)
+    Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     Base.metadata.create_all(engine)
     yield Session()
     Base.metadata.drop_all(engine)
@@ -32,21 +33,43 @@ def client(session):
         app.dependency_overrides[get_session] = get_session_override
         yield client
 
-    app.dependency_overrides = {}
+    app.dependency_overrides.clear()
+
+
+class UserFactory(factory.Factory):
+    class Meta:
+        model = User
+
+    id = factory.Sequence(lambda n: n)
+    username = factory.LazyAttribute(lambda o: f'test{o.id}')
+    email = factory.LazyAttribute(lambda o: f'{o.username}@test.com')
+    password = factory.LazyAttribute(lambda o: f'{o.username}@test.com')
 
 
 @pytest.fixture
 def user(session):
-    user = User(
-        username='test',
-        email='test@email.com',
-        password=get_password_hash('12345678'),
-    )
+    password = '12345678'
+    user = UserFactory(password=get_password_hash(password))
+
     session.add(user)
     session.commit()
     session.refresh(user)
 
     user.clean_password = '12345678'  # type: ignore
+
+    return user
+
+
+@pytest.fixture
+def other_user(session):
+    password = 'testtest'
+    user = UserFactory(password=get_password_hash(password))
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    user.clean_password = 'testtest'  # type: ignore
 
     return user
 
