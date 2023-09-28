@@ -36,25 +36,51 @@ O projeto consiste em uma API para gerenciamento de usuários e seus endereços.
 ## Estrutura do projeto
 
 ```bash
-backend_tdd_fastapi
-├── app.py
-├── conf
-│   └── settings.py
-├── infra
-│   └── database.py
-├── modules
-│   └── user
-│       ├── controller
-│       │   ├── create_user.py
-│       │   ├── delete_user.py
-│       │   ├── get_user.py
-│       │   └── update_user.py
-│       ├── dto
-│       │   └── schemas.py
-│       └── model
-│           └── user_model.py
-└── routers
-    └── __init__.py
+├── alembic.ini
+├── backend_tdd_fastapi
+│   ├── app.py
+│   ├── conf
+│   │   └── settings.py
+│   ├── infra
+│   │   ├── database.py
+│   │   └── seeds.py
+│   ├── modules
+│   │   ├── auth
+│   │   │   ├── controller
+│   │   │   │   └── generate_token.py
+│   │   │   └── dto
+│   │   │       └── schema.py
+│   │   └── user
+│   │       ├── controller
+│   │       │   ├── create_user.py
+│   │       │   ├── delete_user.py
+│   │       │   ├── get_user.py
+│   │       │   └── update_user.py
+│   │       ├── dto
+│   │       │   └── schemas.py
+│   │       └── model
+│   │           └── user_model.py
+│   ├── routers
+│   │   └── __init__.py
+│   └── security.py
+├── DOCS.png
+├── LICENSE
+├── migrations
+│   ├── env.py
+│   ├── README
+│   ├── script.py.mako
+│   └── versions
+│       └── a7baecc21ccf_create_users_table.py
+├── poetry.lock
+├── pyproject.toml
+├── README.md
+└── tests
+    ├── conftest.py
+    ├── __init__.py
+    ├── test_app.py
+    ├── test_auth.py
+    ├── test_db.py
+    └── test_security.py
 ```
 
 ## Licença
