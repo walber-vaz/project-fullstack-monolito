@@ -4,9 +4,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from backend_tdd_fastapi.infra.database import get_session
-from backend_tdd_fastapi.modules.user.dto.schemas import UserSchemaUserList
-from backend_tdd_fastapi.modules.user.model.user_model import User
+from api.v1.infra.database import get_session
+from api.v1.modules.user.dto.schemas import UserSchemaUserList
+from api.v1.modules.user.model.user_model import User
 
 router = APIRouter()
 

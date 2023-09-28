@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Criando Api REST usando TDD com fastapi"
 authors = ["Walber Vaz da Silva <wvs.walber@gmail.com>"]
 readme = "README.md"
-packages = [{ include = "backend_tdd_fastapi" }]
+packages = [{ include = "api" }]
 
 [tool.poetry.dependencies]
 python = "3.11.*"
@@ -49,9 +49,9 @@ extend-exclude = '(migrations/)'
 [tool.taskipy.tasks]
 lint = 'ruff . && blue --check . --diff'
 format = 'blue .  && isort .'
-run = 'uvicorn backend_tdd_fastapi.app:app --reload'
+run = 'uvicorn api.app:app --reload'
 pre_test = 'task lint'
-test = 'pytest -s -x --cov=backend_tdd_fastapi -vv'
+test = 'pytest -s -x --cov=api -vv'
 post_test = 'coverage html'
 
 [build-system]

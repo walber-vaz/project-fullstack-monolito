@@ -5,8 +5,8 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from backend_tdd_fastapi.conf.settings import Settings
-from backend_tdd_fastapi.modules.user.model.user_model import Base
+from api.v1.conf.settings import Settings
+from api.v1.modules.user.model.user_model import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

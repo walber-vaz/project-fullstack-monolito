@@ -7,14 +7,14 @@ from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from backend_tdd_fastapi.conf.settings import Settings
-from backend_tdd_fastapi.infra.database import get_session
-from backend_tdd_fastapi.modules.auth.dto.schema import TokenData
-from backend_tdd_fastapi.modules.user.model.user_model import User
+from api.v1.conf.settings import Settings
+from api.v1.infra.database import get_session
+from api.v1.modules.auth.dto.schema import TokenData
+from api.v1.modules.user.model.user_model import User
 
 settings = Settings()  # type: ignore
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f'{settings.API_VERSION}/token')
 
 
 def create_access_token(data: dict) -> str:

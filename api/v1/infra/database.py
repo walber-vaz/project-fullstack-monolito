@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from backend_tdd_fastapi.conf.settings import Settings
+from api.v1.conf.settings import Settings
 
 engine = create_engine(Settings().DATABASE_URL)  # type: ignore
 

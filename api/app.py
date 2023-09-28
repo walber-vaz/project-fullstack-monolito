@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import main_router
+from api.v1.routers import main_router
 
 app = FastAPI(
     title='Backend TDD FastAPI',
@@ -28,4 +28,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(main_router)
+app.include_router(main_router)  # type: ignore

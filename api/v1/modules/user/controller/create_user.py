@@ -4,13 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from backend_tdd_fastapi.infra.database import get_session
-from backend_tdd_fastapi.modules.user.dto.schemas import (
-    UserSchema,
-    UserSchemaResponse,
-)
-from backend_tdd_fastapi.modules.user.model.user_model import User
-from backend_tdd_fastapi.security import get_password_hash
+from api.security import get_password_hash
+from api.v1.infra.database import get_session
+from api.v1.modules.user.dto.schemas import UserSchema, UserSchemaResponse
+from api.v1.modules.user.model.user_model import User
 
 router = APIRouter()
 

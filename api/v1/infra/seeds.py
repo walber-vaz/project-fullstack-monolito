@@ -2,9 +2,9 @@ from faker import Faker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from backend_tdd_fastapi.conf.settings import Settings
-from backend_tdd_fastapi.modules.user.model.user_model import User
-from backend_tdd_fastapi.security import get_password_hash
+from api.security import get_password_hash
+from api.v1.conf.settings import Settings
+from api.v1.modules.user.model.user_model import User
 
 fake = Faker('pt_BR')
 settings = Settings().DATABASE_URL  # type: ignore
