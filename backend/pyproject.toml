@@ -23,13 +23,15 @@ python-multipart = "^0.0.6"
 pytest = "^7.4.2"
 pytest-cov = "^4.1.0"
 taskipy = "^1.12.0"
-blue = "^0.9.1"
 ruff = "^0.0.291"
 httpx = "^0.25.0"
 isort = "^5.12.0"
 pytest-asyncio = "^0.21.1"
 factory-boy = "^3.3.0"
 freezegun = "^1.2.2"
+prospector = "^1.10.2"
+black = "^23.9.1"
+pip-audit = "^2.6.1"
 
 [tool.ruff]
 line-length = 79
@@ -43,12 +45,34 @@ extend_skip = ['migrations']
 [tool.pytest.ini_options]
 pythonpath = "."
 
-[tool.blue]
-extend-exclude = '(migrations/)'
+[tool.prospector]
+profile = "black"
+ignore = ["migrations", ".venv"]
+strictness = "high"
+
+[tool.black]
+line-length = 79
+skip-string-normalization = true
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+)/
+'''
 
 [tool.taskipy.tasks]
-lint = 'ruff . && blue --check . --diff'
-format = 'blue .  && isort .'
+check_vulnerabilities = 'pip-audit'
+lint = 'ruff . && black --check . --diff && isort --check . --diff && prospector'
+format = 'black . && isort .'
 run = 'uvicorn api.app:app --reload'
 pre_test = 'task lint'
 test = 'pytest -s -x --cov=api -vv'
