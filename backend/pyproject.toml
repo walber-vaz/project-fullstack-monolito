@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "backend-tdd-fastapi"
+name = "backend"
 version = "0.1.0"
 description = "Criando Api REST usando TDD com fastapi"
 authors = ["Walber Vaz da Silva <wvs.walber@gmail.com>"]
