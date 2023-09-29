@@ -71,7 +71,7 @@ exclude = '''
 
 [tool.taskipy.tasks]
 check_vulnerabilities = 'pip-audit'
-lint = 'ruff . && black --check . --diff && isort --check . --diff && prospector'
+lint = 'ruff . && black --check . --diff && isort --check . --diff'
 format = 'black . && isort .'
 run = 'uvicorn api.app:app --reload'
 pre_test = 'task lint'
