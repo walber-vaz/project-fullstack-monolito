@@ -17,7 +17,7 @@ alembic = "^1.12.0"
 faker = "^19.6.2"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
-python-multipart = "^0.0.7"
+python-multipart = "^0.0.18"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.2"
@@ -30,7 +30,7 @@ pytest-asyncio = "^0.21.1"
 factory-boy = "^3.3.0"
 freezegun = "^1.2.2"
 prospector = "^1.10.2"
-black = "^23.9.1"
+black = "^24.3.0"
 pip-audit = "^2.6.1"
 
 [tool.ruff]
