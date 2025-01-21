@@ -30,7 +30,7 @@ pytest-asyncio = "^0.21.1"
 factory-boy = "^3.3.0"
 freezegun = "^1.2.2"
 prospector = "^1.10.2"
-black = "^23.9.1"
+black = "^24.3.0"
 pip-audit = "^2.6.1"
 
 [tool.ruff]
